@@ -1,0 +1,13 @@
+.weather-info {
+    padding: 10px 10px 10px 25px;
+}
+
+.weather-info .weather-label {
+    color: #8b8b8b;
+    font-size: 13px;
+}
+
+.weather-title {
+    font-size: 30px;
+    font-weight: bold;
+}
