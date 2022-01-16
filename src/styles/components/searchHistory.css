@@ -1,0 +1,35 @@
+.search-history .weather-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-history .weather-list .button-gap {
+    margin: 0 10px;
+}
+
+.search-history .weather-list .action-button {
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.search-history .weather-list .button-icon {
+    font-size: 15px;
+    padding: 3px 0;
+}
+
+.search-history .search-history-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-history .search-history-lists ol {
+    padding-left: 1.8em;
+}
+
+.search-history .no-records-text {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 5;
+    color: #8b8b8b;
+    font-weight: 500;
+}

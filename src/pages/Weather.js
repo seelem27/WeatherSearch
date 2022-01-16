@@ -1,42 +1,67 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import './css/weather.css';
-import WeatherInfo from '../components/weatherInfo';
-import SearchHistory from '../components/searchHistory';
+import React, { useState } from 'react';
+import WeatherInfo from '../components/WeatherInfo';
+import SearchHistory from '../components/SearchHistory';
 import axios from 'axios';
+
+import '../styles/pages/weather.css';
+import '../styles/responsive/weather.css';
 
 export default function Weather() {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [data, setData] = useState({});
     const [weatherHistories, setWeatherHistories] = useState(JSON.parse(localStorage.getItem('weatherHistories')) || []);
+    const [error, setError] = useState(false);
+    const [showToggle, setShowToggle] = useState(false);
 
     const KEY = 'c8e63570cfd1d95c0766796a0a4ca6cc';
     const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather?';
-    
+    let httpParams;
+
+    const resetStateToDefault = () => {
+        setCity('');
+        setCountry('');
+    }
+
     const searchWeather = async(city, country) => {
-        let httpParams = {q :  city + "," + country, APPID : KEY  }
+        if(city === "") httpParams = {q : country, APPID : KEY}
+        else if(country === "") httpParams = {q : city, APPID : KEY}
+        else httpParams = {q : city + "," + country, APPID : KEY}
+
         let searchParams = new URLSearchParams(httpParams);
-        const result = await axios(
-            BASE_URL + searchParams.toString()
-        );
-        console.log(result.data)
-        const newHistories = [...weatherHistories]
-        newHistories.unshift(result.data)
-        setWeatherHistories(newHistories);
-        localStorage.setItem('weatherHistories', JSON.stringify(newHistories)); //for persistent data 
-        setData(result.data);
+
+        try {
+            const result = await axios.get(BASE_URL + searchParams.toString());
+            let responseData = result.data
+            responseData.current_time = new Date().toLocaleTimeString()
+            const newHistories = [...weatherHistories];
+            newHistories.unshift(responseData);
+            setWeatherHistories(newHistories);
+            localStorage.setItem('weatherHistories', JSON.stringify(newHistories)); //for persistent data 
+            setData(responseData);
+            setError(false);
+            setShowToggle(true);
+        } catch(err) {
+            if(err.response.status === 404) {
+                setError(true); 
+                setShowToggle(true)
+            }
+        }        
     }
 
     const deleteWeather = (i) => {
-        const newHistories = [...weatherHistories]
+        const newHistories = [...weatherHistories];
         newHistories.splice(i, 1);        
         localStorage.setItem('weatherHistories', JSON.stringify(newHistories)); //for persistent data 
         setWeatherHistories(newHistories);
+
+        (Array.isArray(newHistories) && newHistories.length) ? setShowToggle(true) : setShowToggle(false); 
     }
 
     const clearAllHistory = () => {
         localStorage.removeItem('weatherHistories');
         setWeatherHistories([]);
+        setShowToggle(false);
     }
 
     return (
@@ -46,21 +71,25 @@ export default function Weather() {
                 <hr />
             </div>    
             <div className='weather-content'>
-                <div className='searchBar-container'>
-                    <form>
+                <form>
+                    <div className='searchBar-container'>
                         <div className='label-input'>
                             <label htmlFor='city'>City: </label>
-                            <input type='text' id='city' onChange={e => setCity(e.target.value)}/>
+                            <input type='text' id='city' onInput={e => setCity(e.target.value)} />
                         </div>
                         <div className='label-input'>
                             <label htmlFor='country'>Country: </label>
-                            <input type='text' id='country' onChange={e => setCountry(e.target.value)}/>
+                            <input type='text' id='country' onInput={e => setCountry(e.target.value)} />
                         </div>
-                        <button className='button' type="button" onClick={() => searchWeather(city, country)}>Search</button>
-                        <button className='button' type='reset'>Clear</button>
-                    </form>
-                </div>                   
-                <WeatherInfo weather={data}/>
+                        <div className='button-group'>
+                            <button disabled={!city && !country} className='button' type="button" onClick={() => searchWeather(city, country)}>Search</button>
+                            <button className='button' type='reset' onClick={() => resetStateToDefault()}>Clear</button>
+                        </div>
+                    </div>
+                </form>
+                { showToggle === false ? null :
+                    <WeatherInfo weather={data} error={error}/>
+                }                  
                 <SearchHistory weatherHistories={weatherHistories} searchWeather={searchWeather} deleteWeather={deleteWeather} clearAllHistory={clearAllHistory} />
             </div>
         </div>

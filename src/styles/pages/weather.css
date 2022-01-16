@@ -4,19 +4,20 @@
     border-radius: 10px;
 }
 
-.title {
+.container .title {
     font-weight: bold;
 }
 
-.searchBar-container {
+.weather-content .searchBar-container {
     display: flex;
     padding-right: 10px;
+    flex-wrap: wrap;
 }
 
-.label-input {
+.weather-content .searchBar-container .label-input {
     padding: 0 10px;
 }
 
-.button {
+.weather-content .searchBar-container .button {
     margin: 0 5px;
 }

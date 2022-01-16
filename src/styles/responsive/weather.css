@@ -1,0 +1,43 @@
+@media only screen and (max-width: 1200px) {
+}
+
+@media only screen and (max-width: 992px) {
+}
+
+@media only screen and (max-width: 768px) {
+    .weather-content .searchBar-container .label-input label {
+        display: block;
+    }
+
+    .weather-content .searchBar-container .button-group {
+        padding-top: 20px;
+    }
+}
+
+@media only screen and (max-width: 578px) {
+    .weather-content .searchBar-container .label-input label {
+        display: block;
+    }
+
+    .weather-content .searchBar-container .button-group {
+        padding-top: 10px;
+    }
+
+    .search-history .weather-list .right-group {
+        display: flex;
+    }
+
+    .search-history .weather-list span {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .search-history .weather-list .right-group {
+        display: flex;
+    }
+
+    .search-history .weather-list span {
+        font-size: 11px;
+    }
+}

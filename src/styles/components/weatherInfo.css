@@ -1,0 +1,30 @@
+.weather-info {
+    padding: 20px 10px 30px 25px;
+}
+
+.weather-info .weather-content {
+    display: flex;
+}
+
+.weather-info .weather-label {
+    color: #8b8b8b;
+    font-size: 13px;
+    padding-right: 20px;
+}
+
+.weather-info .weather-title {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.weather-info .weather-detail {
+    color: black;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.weather-info .not-found {
+    border: 2px solid #e78181;
+    background-color: #f8e5e5;
+    padding-left: 15px;
+}
