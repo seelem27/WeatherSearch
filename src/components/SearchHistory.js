@@ -39,7 +39,7 @@ export default function SearchHistory(props) {
                         {memorisedHistoriesJSX}
                     </ol>
                 </div>
-            :   <p className='no-records-text'>No Records</p> 
+                : <p className='no-records-text'>No Records</p> 
             }
         </div>
     )
